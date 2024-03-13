@@ -19,6 +19,7 @@ class Main extends StatelessWidget {
       statusBarColor: Color.fromRGBO(0, 0, 0, 0),
     ));
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
   }

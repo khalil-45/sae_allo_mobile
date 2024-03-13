@@ -68,9 +68,15 @@ class WelcomePage extends StatelessWidget {
                 GoRouter.of(context).go('/connexion');
               });
             },
-            child: const Text(
-              'With Progress',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+            child: Text(
+              'Connexion',
+              style: GoogleFonts.sora(
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),
