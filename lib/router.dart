@@ -4,23 +4,13 @@ import 'connexion.dart';
 import 'welcome.dart';
 
 class AppRouter {
+
+  final GlobalKey<NavigatorState> _rootNavigatorKey =
+    GlobalKey<NavigatorState>();
+  
+  
   final router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        pageBuilder: (context, state) => const MaterialPage<void>(
-          key: ValueKey('/'),
-          child: WelcomePage(),
-        ),
-      ),
-      GoRoute(
-        path: '/connexion',
-        pageBuilder: (context, state) => const MaterialPage(
-          key: ValueKey('/connexion'),
-          child: Connexion(),
-        ),
-      ),
-    ],
+    navigatorKey: _rootNavigatorKey,
   );
 }
 
