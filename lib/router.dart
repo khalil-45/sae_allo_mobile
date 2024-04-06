@@ -1,40 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'connexion.dart';
-import 'welcome.dart';
+import 'vues/connexion.dart';
+import 'vues/welcome.dart';
+import 'vues/home.dart';
+import 'components/bottom_navigation_bar.dart';
 
 class AppRouter {
+  final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+  late final GoRouter router;
 
-  final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>();
-  
-  
-  final router = GoRouter(
-    navigatorKey: _rootNavigatorKey,
-  );
-}
-
-class bottomNavBar extends StatelessWidget {
-  const bottomNavBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+  AppRouter() {
+    router = GoRouter(
+      navigatorKey: _rootNavigatorKey,
+      initialLocation: '/welcome',
+      routes: [
+        GoRoute(
+          path: '/welcome',
+          pageBuilder: (context, state) => const MaterialPage(child: WelcomePage()),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
+        GoRoute(
+          path: '/connexion',
+            pageBuilder: (context, state) => const MaterialPage(child: ConnexionPage()),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
+        GoRoute(
+          path: '/home',
+          pageBuilder: (context, state) => MaterialPage(
+            child: Scaffold(
+              body: const HomePage(),
+              bottomNavigationBar: BottomNavBar(router),
+            ),
+          ),
         ),
       ],
-      selectedItemColor: Colors.amber[800],
+      errorPageBuilder: (context, state) => MaterialPage(
+  child: Scaffold(
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Page non trouvé !'),
+          TextButton(
+            child: const Text('Go to Home'),
+            onPressed: () => router.go('/home'),
+          ),
+        ],
+      ),
+    ),
+  ),
+)
     );
   }
 }

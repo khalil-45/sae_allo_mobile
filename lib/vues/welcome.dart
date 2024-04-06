@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nice_buttons/nice_buttons.dart';
+import '../components/buttons.dart';
 
 
 class WelcomePage extends StatelessWidget {
@@ -52,33 +54,10 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          Positioned(
         child: Align(
           alignment: AlignmentGeometry.lerp(Alignment.center, Alignment.bottomCenter, 0.9)!,
-          child: NiceButtons(
-            startColor: const Color(0xFFC67C4E),
-            endColor: const Color(0xFFC67C4E),
-            borderColor: const Color(0xFFC67C4E),
-            stretch: false,
-            progress: true,
-            gradientOrientation: GradientOrientation.Horizontal,
-            onTap: (finish) {
-              Timer(const Duration(seconds: 4), () {
-                finish();
-                GoRouter.of(context).go('/connexion');
-              });
-            },
-            child: Text(
-              'Connexion',
-              style: GoogleFonts.sora(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          child: buttonVersConnexion(context),
         ),
       ),
       ],

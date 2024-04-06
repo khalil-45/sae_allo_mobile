@@ -1,14 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:nice_buttons/nice_buttons.dart';
-import 'theme.dart' as theme;
+import '../components/buttons.dart';
 
-
-class Connexion extends StatelessWidget {
-  const Connexion({Key? key}) : super(key: key);
+class ConnexionPage extends StatelessWidget {
+  const ConnexionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,31 +52,4 @@ class Connexion extends StatelessWidget {
       ),
     );
   }
-}
-
-NiceButtons buttonConnexion(BuildContext context) {
-return NiceButtons(
-            startColor: theme.Theme.primaryColor,
-            endColor: theme.Theme.primaryColor,
-            borderColor: theme.Theme.primaryColor,
-            stretch: false,
-            progress: true,
-            gradientOrientation: GradientOrientation.Horizontal,
-            onTap: (finish) {
-              Timer(const Duration(seconds: 4), () {
-                finish();
-                GoRouter.of(context).go('/home');
-              });
-            },
-            child: Text(
-              'Connexion',
-              style: GoogleFonts.sora(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          );
 }
