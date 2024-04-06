@@ -15,9 +15,7 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Color.fromRGBO(0, 0, 0, 0),
-    ));
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
