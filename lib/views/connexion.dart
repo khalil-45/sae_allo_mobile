@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:sae_allo_mobile/model/Utilisateurs.dart';
 import 'package:sae_allo_mobile/style/bouton.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_allo_mobile/main.dart';
 
 
 class Connexion extends StatefulWidget {
@@ -16,6 +18,7 @@ class Connexion extends StatefulWidget {
 class _ConnexionState extends State<Connexion> {
   final _usernameController = TextEditingController();
   final _websiteController = TextEditingController();
+  final _lesUsers = supabase.from('utilisateur').stream(primaryKey: ['id_Util']);
   
 
   bool _loading = true;
@@ -31,18 +34,29 @@ class _ConnexionState extends State<Connexion> {
     try {
 
       // afficher les tables de la base de données
-      final tables = await Supabase.instance.client.from('information_schema.tables').select('table_name');
-      log('tables: ${tables.toString()}');
+      final tables = supabase.from('utilisateur').select();
 
-      final data = await Supabase.instance.client
+      Stream<List<Utilisateur>> lstUtil = tables.asStream().map((response) {
+        log(response.toString());
+        final List<Utilisateur> lstUtil = [];
+        for (final row in response) {
+          lstUtil.add(Utilisateur.fromMap(row));
+        }
+        return lstUtil;
+      });  
+
+      
+      lstUtil.forEach((element) { 
+        log(element.toString());
+        });
+
+      final data = await supabase
           .from('utilisateur')
           .select()
-          .eq('id', 1)
+          .eq('id_Util', 1)
           .single();
 
-          
-                  
-      log('data: ${data.toString()}');
+      
 
       _usernameController.text = (data['prenom_util'] ?? '') as String;
       _websiteController.text = (data['mdp_Util'] ?? '') as String;
@@ -106,16 +120,19 @@ class _ConnexionState extends State<Connexion> {
             ),
           ),
               const SizedBox(height: 100.0), // Add some space between the text and input fields
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller : _usernameController,
+
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                 ),
               ),
               const SizedBox(height: 16.0), // Add some space between the input fields
-              const TextField(
+              TextField(
+                controller: _websiteController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Mot de passe',
                 ),
