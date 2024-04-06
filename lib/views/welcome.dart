@@ -64,7 +64,7 @@ class WelcomePage extends StatelessWidget {
             progress: true,
             gradientOrientation: GradientOrientation.Horizontal,
             onTap: (finish) {
-              Timer(const Duration(seconds: 4), () {
+              Timer(const Duration(seconds: 1), () {
                 finish();
                 context.go('/connexion');
               });
