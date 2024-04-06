@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'connexion.dart';
-import 'welcome.dart';
+import 'package:sae_allo_mobile/views/connexion.dart';
+import 'package:sae_allo_mobile/views/welcome.dart';
+
+final GlobalKey<NavigatorState> _goRouterKey = GlobalKey<NavigatorState>();
+
 
 class AppRouter {
-  final router = GoRouter(
+
+  get router => _router;
+
+
+  late final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => const MaterialPage<void>(
-          key: ValueKey('/'),
-          child: WelcomePage(),
-        ),
+        builder: (context, state) {
+          return const WelcomePage();
+        }
       ),
       GoRoute(
         path: '/connexion',
-        pageBuilder: (context, state) => const MaterialPage<void>(
-          key: ValueKey('/connexion'), 
-          child: Connexion(),
-        ),
+        builder: (context, state) {
+          return const Connexion();
+        }
       ),
     ],
   );
