@@ -32,6 +32,13 @@ class _MesAnnoncesPageState extends State<MesAnnoncesPage> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go('/home/annonces/add');
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
