@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../theme.dart' as theme;
 
 
-NiceButtons buttonConnexion(BuildContext context) {
+NiceButtons buttonConnexion(BuildContext context, {Function? function}) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -16,9 +16,13 @@ return NiceButtons(
             progress: true,
             gradientOrientation: GradientOrientation.Horizontal,
             onTap: (finish) {
-              Timer(const Duration(seconds: 4), () {
+              Timer(const Duration(seconds: 1), () {
                 finish();
-                GoRouter.of(context).go('/home');
+                if (function != null) {
+                  function();
+                } else {
+                  GoRouter.of(context).go('/connexion');
+                }
               });
             },
             child: Text(

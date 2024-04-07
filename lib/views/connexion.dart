@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sae_allo_mobile/components/buttons.dart';
 import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
-import 'package:sae_allo_mobile/style/bouton.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sae_allo_mobile/main.dart';
 
 
@@ -40,23 +38,20 @@ class _ConnexionState extends State<Connexion> {
   }
 
   
-  @override
-  Widget build(BuildContext context) {
-
-
-
-  Future<void> _getProfile() async {
+  Future<void> _getProfile(context) async {
 
     log('getProfile');
 
     try {
 
       final userExists = await UserProvider().userExists(_usernameController.text, _websiteController.text);
+      log('User exists: $userExists');
+      if (userExists.isNotEmpty) {
 
-      if (userExists) {
-        final user = await UserProvider().getUser(_usernameController.text);
-        log('User: $user');
-        context.go('/home');
+        // utiliser les shared preferences pour stocker les informations de l'utilisateur
+        // et les récupérer dans la page home
+        
+        GoRouter.of(context).go('/home');
 
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -76,6 +71,9 @@ class _ConnexionState extends State<Connexion> {
     }
   }
 
+  
+  @override
+  Widget build(BuildContext context) {
 
 
     return Scaffold(
@@ -120,7 +118,7 @@ class _ConnexionState extends State<Connexion> {
                 ),
               ),
               const SizedBox(height: 16.0), // Add some space between the input fields and the button
-              buttonConnexion(_getProfile),
+              buttonConnexion(context, function: () => _getProfile(context)),
             ],
           ),
         ),
