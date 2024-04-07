@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../theme.dart' as theme;
 
 
-NiceButtons buttonConnexion(BuildContext context) {
+NiceButtons buttonConnexion(BuildContext context, TextEditingController emailController, TextEditingController passwordController, Function signInUser) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -18,7 +18,8 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 4), () {
                 finish();
-                GoRouter.of(context).go('/home');
+                signInUser(emailController.text, passwordController.text);
+                context.go('/home');
               });
             },
             child: Text(

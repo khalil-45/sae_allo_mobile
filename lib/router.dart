@@ -28,7 +28,7 @@ class AppRouter {
         GoRoute(
           path: '/connexion',
           pageBuilder: (context, state) =>
-              const MaterialPage(child: ConnexionPage()),
+              MaterialPage(child: ConnexionPage()),
         ),
         GoRoute(
           path:'/inscription',

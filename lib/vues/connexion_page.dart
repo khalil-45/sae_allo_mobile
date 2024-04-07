@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons.dart';
 
 class ConnexionPage extends StatelessWidget {
-  const ConnexionPage({Key? key}) : super(key: key);
+  ConnexionPage({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  SupabaseClient supabase = Supabase.instance.client;
+
+  Future<void> signInWithEmail(String email, String password) async {
+  final AuthResponse res = await supabase.auth.signInWithPassword(
+    email: email,
+    password: password,
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +44,24 @@ class ConnexionPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 100.0), // Add some space between the text and input fields
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                 ),
+                controller: emailController,
               ),
               const SizedBox(height: 16.0), // Add some space between the input fields
-              const TextField(
+              TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Mot de passe',
                 ),
+                controller: passwordController,
               ),
               const SizedBox(height: 16.0), // Add some space between the input fields and the button
-              buttonConnexion(context),
+              buttonConnexion(context, emailController, passwordController, signInWithEmail),
               const SizedBox(height: 16.0), // Add some space between the button and the text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
