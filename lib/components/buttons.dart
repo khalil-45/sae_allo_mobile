@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../theme.dart' as theme;
 
 
-NiceButtons buttonConnexion(BuildContext context) {
+NiceButtons buttonConnexion(BuildContext context, TextEditingController emailController, TextEditingController passwordController, Function signInUser) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -18,7 +18,8 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 4), () {
                 finish();
-                GoRouter.of(context).go('/home');
+                signInUser(emailController.text, passwordController.text);
+                context.go('/home');
               });
             },
             child: Text(
@@ -34,7 +35,7 @@ return NiceButtons(
           );
 }
 
-NiceButtons buttonInscription(BuildContext context) {
+NiceButtons buttonInscription(BuildContext context, TextEditingController emailController, TextEditingController passwordController, TextEditingController firstNameController, TextEditingController lastNameController, TextEditingController phoneController, TextEditingController pseudoController, Function signUpNewUser) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -45,7 +46,8 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 4), () {
                 finish();
-                GoRouter.of(context).go('/inscription');
+                signUpNewUser(emailController.text, passwordController.text, firstNameController.text, lastNameController.text, phoneController.text, pseudoController.text);
+                context.go('/home');
               });
             },
             child: Text(
@@ -77,6 +79,32 @@ return NiceButtons(
             },
             child: Text(
               'Connexion',
+              style: GoogleFonts.sora(
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+}
+
+NiceButtons buttonAider(BuildContext context) {
+return NiceButtons(
+            startColor: theme.Theme.primaryColor,
+            endColor: theme.Theme.primaryColor,
+            borderColor: theme.Theme.primaryColor,
+            stretch: false,
+            progress: true,
+            gradientOrientation: GradientOrientation.Horizontal,
+            onTap: (finish) {
+              Timer(const Duration(seconds: 3), () {
+                finish();
+              });
+            },
+            child: Text(
+              'Aider',
               style: GoogleFonts.sora(
                 textStyle: const TextStyle(
                   color: Colors.white,

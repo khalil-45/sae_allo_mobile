@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   final GoRouter router;
   const BottomNavBar(this.router, {Key? key}) : super(key: key);
+
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +29,21 @@ class BottomNavBar extends StatelessWidget {
           label: 'Profil',
         ),
       ],
+      currentIndex: _selectedIndex,
       selectedItemColor: Colors.amber[800],
       onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+        });
         switch (index) {
           case 0:
-            router.go('/home');
+            widget.router.go('/home');
             break;
           case 1:
-            router.go('/mes-annonces');
+            widget.router.go('/mes-annonces');
             break;
           case 2:
-            router.go('/profil');
+            widget.router.go('/profil');
             break;
         }
       },
