@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/annonce_card.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/empty_state_widget.dart';
 import '../model/annonce.dart';
-
+import 'package:supabase/supabase.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late Future<List<Annonce>> _future;
 
   @override
   void initState() {
@@ -23,66 +25,19 @@ class _HomePageState extends State<HomePage> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       HapticFeedback.mediumImpact();
     });
+    _future = _fetchAnnonces();
+  }
+
+  Future<List<Annonce>> _fetchAnnonces() async {
+    final response = await Supabase.instance.client
+      .from('annonce')
+      .select();
+
+    return (response as List).map((json) => Annonce.fromJson(json)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    Annonce annonce1 = Annonce(
-      id: 1,
-      name: 'Annonce 1',
-      description: 'Description de l\'annonce 1',
-      image: 'https://picsum.photos/250?image=9',
-      isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 1',
-    );
-    Annonce annonce2 = Annonce(
-      id: 2,
-      name: 'Annonce 2',
-      description: 'Description de l\'annonce 2',
-      image: 'https://picsum.photos/250?image=10',
-      isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 2',
-    );
-    Annonce annonce3 = Annonce(
-      id: 3,
-      name: 'Annonce 3',
-      description: 'Description de l\'annonce 3',
-      image: 'https://picsum.photos/250?image=11',
-      isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 3',
-    );
-    Annonce annonce4 = Annonce(
-      id: 4,
-      name: 'Annonce 4',
-      description: 'Description de l\'annonce 4',
-      image: 'https://picsum.photos/250?image=12',
-      isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 2',
-    );
-    Annonce annonce5 = Annonce(
-      id: 5,
-      name: 'Annonce 5',
-      description: 'Description de l\'annonce 5',
-      image: 'https://picsum.photos/250?image=13',
-      isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 3',
-    );
-    var gridViewMealsRecordList = [
-      annonce1,
-      annonce2,
-      annonce3,
-      annonce4,
-      annonce5,];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -118,38 +73,50 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(14),
-                  child: gridViewMealsRecordList.isEmpty
-                      ? EmptyStateWidget(
-                          icon: Icon(
-                            Icons.no_food_outlined,
-                            color: Theme.of(context).colorScheme.onBackground,
-                            size: 64,
-                          ),
-                          title: 'No Meals',
-                          description:
-                              'No meals have been created or match your dietary preferences.',
-                        )
-                      : GridView.builder(
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.78,
-                          ),
-                          scrollDirection: Axis.vertical,
-                          itemCount: gridViewMealsRecordList.length,
-                          itemBuilder: (context, gridViewIndex) {
-                            final gridViewAnnonceRecord =
-                                gridViewMealsRecordList[gridViewIndex];
-                            return AnnonceCardWidget(
-                              key: Key(
-                                  'Keykia_${gridViewIndex}_of_${gridViewMealsRecordList.length}'),
-                              annonceRef: gridViewAnnonceRecord,
-                            );
-                          },
-                        ),
+                  child: FutureBuilder<List<Annonce>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final gridViewMealsRecordList = snapshot.data!;
+                        return gridViewMealsRecordList.isEmpty
+                            ? EmptyStateWidget(
+                                icon: Icon(
+                                  Icons.no_food_outlined,
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  size: 64,
+                                ),
+                                title: 'No Meals',
+                                description:
+                                    'No meals have been created or match your dietary preferences.',
+                              )
+                            : GridView.builder(
+                                padding: EdgeInsets.zero,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  childAspectRatio: 0.78,
+                                ),
+                                scrollDirection: Axis.vertical,
+                                itemCount: gridViewMealsRecordList.length,
+                                itemBuilder: (context, gridViewIndex) {
+                                  final gridViewAnnonceRecord =
+                                      gridViewMealsRecordList[gridViewIndex];
+                                  return AnnonceCardWidget(
+                                    key: Key(
+                                        'Keykia_${gridViewIndex}_of_${gridViewMealsRecordList.length}'),
+                                    annonceRef: gridViewAnnonceRecord,
+                                  );
+                                },
+                              );
+                      }
+                    },
+                  ),
                 ),
               ),
             ],

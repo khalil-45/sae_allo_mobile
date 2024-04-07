@@ -34,7 +34,7 @@ return NiceButtons(
           );
 }
 
-NiceButtons buttonInscription(BuildContext context) {
+NiceButtons buttonInscription(BuildContext context, TextEditingController emailController, TextEditingController passwordController, TextEditingController firstNameController, TextEditingController lastNameController, TextEditingController phoneController, Function signUpNewUser) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -45,7 +45,8 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 4), () {
                 finish();
-                GoRouter.of(context).go('/inscription');
+                signUpNewUser(emailController.text, passwordController.text, firstNameController.text, lastNameController.text, phoneController.text);
+                context.go('/home');
               });
             },
             child: Text(
