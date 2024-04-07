@@ -3,11 +3,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Utilisateur{
 
-  final String id_Util;
-  final String prenom_Util;
-  final String nom_Util;
-  final String pseudo_Util;
-  final int age;
+  int id_Util;
+  String prenom_Util;
+  String nom_Util;
+  String pseudo_Util;
+  int age;
 
   Utilisateur({
     required this.id_Util,
@@ -20,21 +20,34 @@ class Utilisateur{
 
   Map<String, dynamic> toMap() {
     return {
-      'id_Util': id_Util,
-      'prenom_Util': prenom_Util,
-      'nom_Util': nom_Util,
-      'pseudo_Util': pseudo_Util,
+      'id_util': id_Util,
+      'prenom_util': prenom_Util,
+      'nom_util': nom_Util,
+      'pseudo_util': pseudo_Util,
       'age': age,
     };
   }
 
+    Map<String, dynamic> toInsert() {
+    return {
+      'prenom_util': prenom_Util,
+      'nom_util': nom_Util,
+      'pseudo_util': pseudo_Util,
+      'age': age,
+    };
+    }
+
+
   static Utilisateur fromMap(Map<String, dynamic> map) {
+    // for (var key in map.keys) {
+    //   print('Key: $key');
+    // }
     return Utilisateur(
-      id_Util: map['id_Util'],
-      prenom_Util: map['prenom_Util'],
-      nom_Util: map['nom_Util'],
-      pseudo_Util: map['pseudo_Util'],
-      age: map['age'],
+      id_Util: map['id_util'],
+      prenom_Util: map['prenom_util'],
+      nom_Util: map['nom_util'],
+      pseudo_Util: map['pseudo_util'],
+      age: map['age_util'],
     );
   }
 

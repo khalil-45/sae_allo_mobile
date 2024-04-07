@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
 import 'package:sae_allo_mobile/model/Utilisateurs.dart';
 import 'package:sae_allo_mobile/style/bouton.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,66 +26,10 @@ class _ConnexionState extends State<Connexion> {
   bool _loading = true;
 
 
-  Future<void> _getProfile() async {
-    setState(() {
-      _loading = true;
-    });
-
-    log('getProfile');
-
-    try {
-
-      // afficher les tables de la base de données
-      final tables = supabase.from('utilisateur').select();
-
-      Stream<List<Utilisateur>> lstUtil = tables.asStream().map((response) {
-        log(response.toString());
-        final List<Utilisateur> lstUtil = [];
-        for (final row in response) {
-          lstUtil.add(Utilisateur.fromMap(row));
-        }
-        return lstUtil;
-      });  
-
-      
-      lstUtil.forEach((element) { 
-        log(element.toString());
-        });
-
-      final data = await supabase
-          .from('utilisateur')
-          .select()
-          .eq('id_Util', 1)
-          .single();
-
-      
-
-      _usernameController.text = (data['prenom_util'] ?? '') as String;
-      _websiteController.text = (data['mdp_Util'] ?? '') as String;
-    } on PostgrestException catch (error) {
-      SnackBar(
-        content: Text(error.message),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      );
-    } catch (error) {
-      SnackBar(
-        content: const Text('Unexpected error occurred'),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-        });
-      }
-    }
-
-  }
 
   @override
   void initState() {
     super.initState();
-    _getProfile();
   }
 
   @override
@@ -96,6 +42,42 @@ class _ConnexionState extends State<Connexion> {
   
   @override
   Widget build(BuildContext context) {
+
+
+
+  Future<void> _getProfile() async {
+
+    log('getProfile');
+
+    try {
+
+      final userExists = await UserProvider().userExists(_usernameController.text, _websiteController.text);
+
+      if (userExists) {
+        final user = await UserProvider().getUser(_usernameController.text);
+        log('User: $user');
+        context.go('/home');
+
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Utilisateur non trouvé'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+
+
+    } catch (error) {
+        SnackBar(
+            content: Text(error.toString()),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        );
+    }
+  }
+
+
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

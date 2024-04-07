@@ -13,13 +13,6 @@ Future<void> main() async {
   );
 
 
-  // Prouve que la connexion à la BD Supabase à bien été faite
-  if (Supabase.instance.client == null) {
-    print('Erreur de connexion à la BD Supabase');
-  } else {
-    print('Connexion à la BD Supabase réussie');
-  }
-
   runApp(MyApp());
 }
 
