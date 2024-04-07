@@ -87,3 +87,29 @@ return NiceButtons(
             ),
           );
 }
+
+NiceButtons buttonAider(BuildContext context) {
+return NiceButtons(
+            startColor: theme.Theme.primaryColor,
+            endColor: theme.Theme.primaryColor,
+            borderColor: theme.Theme.primaryColor,
+            stretch: false,
+            progress: true,
+            gradientOrientation: GradientOrientation.Horizontal,
+            onTap: (finish) {
+              Timer(const Duration(seconds: 3), () {
+                finish();
+              });
+            },
+            child: Text(
+              'Aider',
+              style: GoogleFonts.sora(
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+}

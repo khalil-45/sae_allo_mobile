@@ -5,6 +5,7 @@ import 'package:sae_allo_mobile/components/annonce_card.dart';
 import '../components/empty_state_widget.dart';
 import '../model/annonce.dart';
 
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
