@@ -35,7 +35,7 @@ return NiceButtons(
           );
 }
 
-NiceButtons buttonInscription(BuildContext context, TextEditingController emailController, TextEditingController passwordController, TextEditingController firstNameController, TextEditingController lastNameController, TextEditingController phoneController, Function signUpNewUser) {
+NiceButtons buttonInscription(BuildContext context, TextEditingController emailController, TextEditingController passwordController, TextEditingController firstNameController, TextEditingController lastNameController, TextEditingController phoneController, TextEditingController pseudoController, Function signUpNewUser) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -46,7 +46,7 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 4), () {
                 finish();
-                signUpNewUser(emailController.text, passwordController.text, firstNameController.text, lastNameController.text, phoneController.text);
+                signUpNewUser(emailController.text, passwordController.text, firstNameController.text, lastNameController.text, phoneController.text, pseudoController.text);
                 context.go('/home');
               });
             },

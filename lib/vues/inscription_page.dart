@@ -18,48 +18,61 @@ class _InscriptionPageState extends State<InscriptionPage> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController pseudoController = TextEditingController();
 
   SupabaseClient supabase = Supabase.instance.client;
 
-  Future<void> signUpNewUser(String email, String motDePasse, String prenom, String nom, String phone) async {
-  try {
-    if (email != null && email.isNotEmpty) {
-      await supabase.auth.signUp(
-        email: email,
-        password: motDePasse,
-        data: {'prenom': prenom, 'nom': nom},
-      );
-    } else if (phone != null && phone.isNotEmpty) {
-      await supabase.auth.signUp(
-        phone: phone,
-        password: motDePasse,
-        data: {'prenom': prenom, 'nom': nom},
-      );
-    } else {
-      throw Exception('Vous devez fournir soit un email, soit un numéro de téléphone');
-    }
-
-    context.go('/home');
-  } catch (e) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Erreur'),
-          content: Text(e.toString()),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+  Future<void> signUpNewUser(String email, String motDePasse, String prenom,
+      String nom, String phone, String pseudo) async {
+    try {
+      if (email != null && email.isNotEmpty) {
+        await supabase.auth.signUp(
+          email: email,
+          password: motDePasse,
+          data: {
+            'prenom': prenom,
+            'nom': nom,
+            'pseudo': pseudo,
+            'phone': phone
+          },
         );
-      },
-    );
+      } else if (phone != null && phone.isNotEmpty) {
+        await supabase.auth.signUp(
+          phone: phone,
+          password: motDePasse,
+          data: {
+            'prenom': prenom,
+            'nom': nom,
+            'pseudo': pseudo,
+            'email': email
+          },
+        );
+      } else {
+        throw Exception(
+            'Vous devez fournir soit un email, soit un numéro de téléphone');
+      }
+
+      context.go('/home');
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erreur'),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +149,14 @@ class _InscriptionPageState extends State<InscriptionPage> {
               const SizedBox(
                   height:
                       16.0), // Add some space between the input fields and the button
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Pseudo',
+                ),
+                controller: pseudoController,
+              ),
+              const SizedBox(height: 16.0), 
               buttonInscription(
                 context,
                 emailController,
@@ -143,6 +164,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                 firstNameController,
                 lastNameController,
                 phoneController,
+                pseudoController,
                 signUpNewUser,
               ),
             ],
