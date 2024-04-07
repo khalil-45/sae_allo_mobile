@@ -50,22 +50,18 @@ class UserProvider{
     }
   }
 
-  Stream<Utilisateur> getUser(String pseudo){
+  Utilisateur getUser(String pseudo){
     try {
       // On récupère les utilisateurs
-      final utilisateurs = supabase.from('utilisateur').select();
-
-      // On récupère l'utilisateur
-      final response = utilisateurs.eq('pseudo_Util', pseudo);
+      final utilisateurs = supabase.from('utilisateur').select().eq('pseudo_Util', pseudo);
 
       // On retourne l'utilisateur
-      return response.asStream().map((reponse) =>
-        Utilisateur.fromMap(reponse.first)
-      );
+      return Utilisateur.fromMap(utilisateurs.asStream().first);
+
     } catch (error) {
       // Gérer l'erreur ici
       print('Erreur lors de la récupération de l\'utilisateur: $error');
-      return const Stream.empty();
+      return Utilisateur(id_Util: -1, prenom_Util: "Erreur", nom_Util: "Erreur", pseudo_Util: "Erreur", age: 1);
     }
   }
 

@@ -18,7 +18,6 @@ class Connexion extends StatefulWidget {
 class _ConnexionState extends State<Connexion> {
   final _usernameController = TextEditingController();
   final _websiteController = TextEditingController();
-  final _lesUsers = supabase.from('utilisateur').stream(primaryKey: ['id_Util']);
   
 
   bool _loading = true;

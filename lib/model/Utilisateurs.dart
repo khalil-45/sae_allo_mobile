@@ -37,7 +37,7 @@ class Utilisateur{
     }
 
 
-  static Utilisateur fromMap(Map<String, dynamic> map) {
+  static Utilisateur fromMap(map) {
     // for (var key in map.keys) {
     //   print('Key: $key');
     // }

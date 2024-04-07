@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/annonce_card.dart';
+import 'package:sae_allo_mobile/model/Categorie.dart';
+import 'package:sae_allo_mobile/model/Etat.dart';
+import 'package:sae_allo_mobile/model/Utilisateurs.dart';
 import '../components/empty_state_widget.dart';
-import '../model/annonce.dart';
+import '../model/Annonce.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,54 +30,69 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Annonce annonce1 = Annonce(
-      id: 1,
-      name: 'Annonce 1',
-      description: 'Description de l\'annonce 1',
+      idAnnonce: 1,
+      titreAnnonce: 'Annonce 1',
+      descriptionAnnonce: 'Description de l\'annonce 1',
       image: 'https://picsum.photos/250?image=9',
       isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 1',
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      categorie: Categorie(id_Cat: 1, nom_Cat: 'Categorie 1'),
+      idUtilPreneur: 1,
+      utilPublieur: Utilisateur(id_Util: 1, nom_Util: 'Utilisateur 1', prenom_Util: 'Prenom 1', pseudo_Util: 'Pseudo 1' , age: 10),
+      etat: Etat(id_Etat: 1, nom_Etat: 'En cours'),
     );
     Annonce annonce2 = Annonce(
-      id: 2,
-      name: 'Annonce 2',
-      description: 'Description de l\'annonce 2',
+      idAnnonce: 2,
+      titreAnnonce: 'Annonce 2',
+      descriptionAnnonce: 'Description de l\'annonce 2',
       image: 'https://picsum.photos/250?image=10',
       isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 2',
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      categorie: Categorie(id_Cat: 1, nom_Cat: 'Categorie 1'),
+      idUtilPreneur: 1,
+      utilPublieur: Utilisateur(id_Util: 1, nom_Util: 'Utilisateur 1', prenom_Util: 'Prenom 1', pseudo_Util: 'Pseudo 1' , age: 10),
+      etat: Etat(id_Etat: 1, nom_Etat: 'En cours'),
     );
     Annonce annonce3 = Annonce(
-      id: 3,
-      name: 'Annonce 3',
-      description: 'Description de l\'annonce 3',
+      idAnnonce: 3,
+      titreAnnonce: 'Annonce 3',
+      descriptionAnnonce: 'Description de l\'annonce 3',
       image: 'https://picsum.photos/250?image=11',
       isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 3',
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      categorie: Categorie(id_Cat: 1, nom_Cat: 'Categorie 1'),
+      idUtilPreneur: 1,
+      utilPublieur: Utilisateur(id_Util: 1, nom_Util: 'Utilisateur 1', prenom_Util: 'Prenom 1', pseudo_Util: 'Pseudo 1' , age: 10),
+      etat: Etat(id_Etat: 1, nom_Etat: 'En cours'),
     );
     Annonce annonce4 = Annonce(
-      id: 4,
-      name: 'Annonce 4',
-      description: 'Description de l\'annonce 4',
+      idAnnonce: 4,
+      titreAnnonce: 'Annonce 4',
+      descriptionAnnonce: 'Description de l\'annonce 4',
       image: 'https://picsum.photos/250?image=12',
       isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 2',
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      categorie: Categorie(id_Cat: 1, nom_Cat: 'Categorie 1'),
+      idUtilPreneur: 1,
+      utilPublieur: Utilisateur(id_Util: 1, nom_Util: 'Utilisateur 1', prenom_Util: 'Prenom 1', pseudo_Util: 'Pseudo 1' , age: 10),
+      etat: Etat(id_Etat: 1, nom_Etat: 'En cours'),
     );
     Annonce annonce5 = Annonce(
-      id: 5,
-      name: 'Annonce 5',
-      description: 'Description de l\'annonce 5',
+      idAnnonce: 5,
+      titreAnnonce: 'Annonce 5',
+      descriptionAnnonce: 'Description de l\'annonce 5',
       image: 'https://picsum.photos/250?image=13',
       isFavorited: false,
-      dateDebut: DateTime.now(),
-      dateFin: DateTime.now(),
-      categorie: 'Categorie 3',
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      categorie: Categorie(id_Cat: 1, nom_Cat: 'Categorie 1'),
+      idUtilPreneur: 1,
+      utilPublieur: Utilisateur(id_Util: 1, nom_Util: 'Utilisateur 1', prenom_Util: 'Prenom 1', pseudo_Util: 'Pseudo 1' , age: 10),
+      etat: Etat(id_Etat: 1, nom_Etat: 'En cours'),
     );
     var gridViewMealsRecordList = [
       annonce1,

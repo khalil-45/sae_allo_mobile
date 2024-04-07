@@ -31,16 +31,20 @@ class cat_Provider{
   }
 
 
-  catExists(String nom) async {
+  getCategorie(String nom_Categorie) async {
     try {
       final categories = supabase.from('categorie').select();
 
-      final response = await categories.eq('nom_Cat', nom);
+      final response = await categories.eq('nom_categorie', nom_Categorie);
 
-      return response.isNotEmpty;
+      return Categorie.fromMap(response.first);
+
     } catch (error) {
-      print('Erreur lors de la vérification de l\'existence de la catégorie: $error');
+      print('Erreur lors de la récupération de la catégorie: $error');
+      return Categorie(id_Cat: -1, nom_Cat: 'Erreur');
     }
   }
+
+
 
 }

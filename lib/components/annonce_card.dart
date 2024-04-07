@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/annonce.dart';
+import '../model/Annonce.dart';
 
 class AnnonceCardWidget extends StatefulWidget {
   final Annonce? annonceRef;
@@ -62,7 +62,7 @@ class _AnnonceCardWidgetState extends State<AnnonceCardWidget> {
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: Text(
-              widget.annonceRef?.name ?? '',
+              widget.annonceRef?.titreAnnonce ?? '',
               maxLines: 2,
               style: const TextStyle(
                 fontSize: 16,
