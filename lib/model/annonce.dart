@@ -79,5 +79,16 @@ class Annonce {
 
 
 
-
+  factory Annonce.fromJson(Map<String, dynamic> json) {
+    return Annonce(
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      dateDebut: DateTime.parse(json['dateDebut']),
+      dateFin: DateTime.parse(json['dateFin']),
+      isFavorited: json['isFavorited'],
+      categorie: json['categorie'],
+      description: json['description'],
+    );
+  }
 }

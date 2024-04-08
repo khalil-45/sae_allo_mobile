@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../model/Annonce.dart';
+import 'package:go_router/go_router.dart';
+import '../model/annonce.dart';
 
 class AnnonceCardWidget extends StatefulWidget {
   final Annonce? annonceRef;
@@ -11,11 +12,12 @@ class AnnonceCardWidget extends StatefulWidget {
 }
 
 class _AnnonceCardWidgetState extends State<AnnonceCardWidget> {
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigate to Annonce details
+        context.go('/home/annonces/${widget.annonceRef?.idAnnonce ?? ''}');
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
