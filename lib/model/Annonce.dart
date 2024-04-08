@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sae_allo_mobile/model/Categorie.dart';
 import 'package:sae_allo_mobile/model/Etat.dart';
 import 'package:sae_allo_mobile/model/Utilisateurs.dart';
@@ -9,14 +11,14 @@ import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
 class Annonce {
 
   final int idAnnonce;
-  final Utilisateur utilPublieur;
+  final int idUtilPublieur;
   String titreAnnonce;
   String descriptionAnnonce;
   DateTime dateAnnonce;
   String image;
   DateTime dateFinAnnonce;
-  Etat etat ;
-  Categorie categorie;
+  int idEtat ;
+  int idCategorie;
   int idUtilPreneur;
   bool isFavorited = false;
 
@@ -38,12 +40,12 @@ class Annonce {
     return {
       'id_annonce': idAnnonce,
       'titre_annonce': titreAnnonce,
-      'description_annonce': descriptionAnnonce,
-      'date_annonce': dateAnnonce,
-      'date_Fin_annonce': dateFinAnnonce,
-      'etat': etat.id_Etat,
-      'categorie': categorie.id_Cat,
-      'util_publieur': utilPublieur.id_Util,
+      'description': descriptionAnnonce,
+      'date_debut': dateAnnonce,
+      'date_fin': dateFinAnnonce,
+      'etat': idEtat,
+      'categorie': idCategorie,
+      'util_publieur': idUtilPublieur,
       'id_Util_preneur': idUtilPreneur
     };
   }
@@ -51,29 +53,41 @@ class Annonce {
   Map<String, dynamic> toInsert() {
     return {
       'titre_annonce': titreAnnonce,
-      'description_annonce': descriptionAnnonce,
-      'date_annonce': dateAnnonce,
-      'date_fin_annonce': dateFinAnnonce,
-      'etat': etat.id_Etat,
-      'categorie': categorie.id_Cat,
-      'util_Publieur': utilPublieur.id_Util,
-      'id_util_preneur': idUtilPreneur
+      'description': descriptionAnnonce,
+      'date_debut': dateAnnonce.toString(),
+      'date_fin': dateFinAnnonce.toString(),
+      'etat': idEtat,
+      'categorie': idCategorie,
+      'util_publieur': idUtilPublieur,
+      'id_util_rep': idUtilPreneur
     };
   }
 
+  static  _toObject(Future<Object> object) async {
+    return await object;
+  }
 
-  factory Annonce.fromMap(Map<String, dynamic> map) {
+
+  factory Annonce.fromMap( map)  {
+    for (var key in map.keys) {
+      print('Key: $key  : ${map[key]} , ${map[key].runtimeType}' );
+    }
+
+    try {
+
+
+
     return Annonce(
       idAnnonce: map['id_annonce'],
       titreAnnonce: map['titre_annonce'],
-      descriptionAnnonce: map['description_annonce'],
-      dateAnnonce: map['date_annonce'],
-      dateFinAnnonce: map['date_fin_annonce'],
-      etat: EtatProvider().getEtat(map['etat']),
-      categorie: cat_Provider().getCategorie(map['categorie']),
-      utilPublieur: UserProvider().getUser(map['util_publieur']),
-      idUtilPreneur: map['id_util_preneur'],
-      image: map['image'],
+      descriptionAnnonce: map['description'],
+      dateAnnonce: DateTime.parse(map['date_debut']),
+      dateFinAnnonce: DateTime.parse(map['date_fin']),
+      idEtat: map['etat'] ?? 0,
+      idCategorie: map['categorie'] ?? 0,
+      idUtilPublieur: map['util_publieur'] ?? 0,
+      idUtilPreneur: map['id_util_rep'] ?? 0,
+      image: map['image'] ?? 'https://picsum.photos/250?image=1',
     );
   }
 
