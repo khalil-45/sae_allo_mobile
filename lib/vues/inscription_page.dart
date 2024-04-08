@@ -25,32 +25,16 @@ class _InscriptionPageState extends State<InscriptionPage> {
   Future<void> signUpNewUser(String email, String motDePasse, String prenom,
       String nom, String phone, String pseudo) async {
     try {
-      if (email != null && email.isNotEmpty) {
-        await supabase.auth.signUp(
-          email: email,
-          password: motDePasse,
-          data: {
-            'prenom': prenom,
-            'nom': nom,
-            'pseudo': pseudo,
-            'phone': phone
-          },
-        );
-      } else if (phone != null && phone.isNotEmpty) {
-        await supabase.auth.signUp(
-          phone: phone,
-          password: motDePasse,
-          data: {
-            'prenom': prenom,
-            'nom': nom,
-            'pseudo': pseudo,
-            'email': email
-          },
-        );
-      } else {
-        throw Exception(
-            'Vous devez fournir soit un email, soit un numéro de téléphone');
-      }
+      await supabase.auth.signUp(
+        email: email,
+        password: motDePasse,
+        data: {
+          'prenom': prenom,
+          'nom': nom,
+          'phone': phone,
+          'pseudo': pseudo,
+        }
+      );
 
       context.go('/home');
     } catch (e) {
@@ -58,11 +42,11 @@ class _InscriptionPageState extends State<InscriptionPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Erreur'),
+            title: const Text('Erreur'),
             content: Text(e.toString()),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

@@ -11,11 +11,17 @@ class ConnexionPage extends StatelessWidget {
 
   SupabaseClient supabase = Supabase.instance.client;
 
-  Future<void> signInWithEmail(String email, String password) async {
-  final AuthResponse res = await supabase.auth.signInWithPassword(
-    email: email,
-    password: password,
-  );
+  Future<void> signInWithEmail(String email, String password, BuildContext context) async {
+  try {
+    await supabase.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erreur de connexion : ${e.toString()}')),
+    );
+  }
 }
 
   @override

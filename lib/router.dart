@@ -9,6 +9,8 @@ import 'vues/detail_annonce.dart';
 import 'model/annonce.dart';
 import 'vues/mes_annonces.dart';
 import 'vues/inscription_page.dart';
+import 'vues/add_annonce_page.dart';
+import 'vues/profile_page.dart';
 
 class AppRouter {
   final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -74,7 +76,24 @@ class AppRouter {
               bottomNavigationBar: BottomNavBar(router),
             ),
           ),
+          routes: [
+            GoRoute(
+              path: 'add',
+              pageBuilder: (context, state) => MaterialPage(
+                child: AddAnnoncePage(),
+              ),
+            ),
+          ],
         ),
+        GoRoute(
+          path: '/profil',
+          pageBuilder: (context, state) => MaterialPage(
+            child: Scaffold(
+              body: ProfilePage(),
+              bottomNavigationBar: BottomNavBar(router),
+            ),
+          ),
+        )
       ],
       errorPageBuilder: (context, state) => MaterialPage(
         child: Scaffold(
