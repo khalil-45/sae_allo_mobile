@@ -28,10 +28,10 @@ class Annonce {
     required this.descriptionAnnonce,
     required this.dateAnnonce,
     required this.dateFinAnnonce,
-    required this.etat ,
+    required this.idEtat ,
     required this.image,
-    required this.categorie,
-    required this.utilPublieur,
+    required this.idCategorie,
+    required this.idUtilPublieur,
     required this.idUtilPreneur,
     this.isFavorited = false,
   });
@@ -89,8 +89,23 @@ class Annonce {
       idUtilPreneur: map['id_util_rep'] ?? 0,
       image: map['image'] ?? 'https://picsum.photos/250?image=1',
     );
+    } catch (e) {
+      print('Error creating Annonce object: $e');
+      return Annonce(
+      idAnnonce: 0,
+      titreAnnonce: 'Annonce non trouvée',
+      descriptionAnnonce: 'Aucune annonce trouvée',
+      image: 'https://picsum.photos/250?image=1',
+      isFavorited: false,
+      dateAnnonce: DateTime.now(),
+      dateFinAnnonce: DateTime.now(),
+      idCategorie: 0,
+      idUtilPreneur: 0,
+      idUtilPublieur: 0,
+      idEtat: 0,
+    );
+    }
   }
-
 
 
 
