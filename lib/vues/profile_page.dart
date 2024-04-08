@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Pseudo',
+                hintText: 'Jean52',
               ),
               controller: pseudoController,
             ),

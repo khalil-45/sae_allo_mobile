@@ -21,6 +21,7 @@ NiceButtons buttonConnexion(
     onTap: (finish) async {
       Timer(const Duration(seconds: 4), () async {
         finish();
+        context.go('/home');
         var response = await signInUser(
             emailController.text, passwordController.text, context);
         if (response != null && response.error == null) {

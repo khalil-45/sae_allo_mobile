@@ -57,13 +57,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'This week\'s meals',
+                      'Toutes les annonces',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                       child: Text(
-                        'Made to order with fresh ingredients each week.',
+                        'Aider les gens en répondant à leurs annonces.',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
