@@ -77,7 +77,7 @@ class Annonce {
 
 
 
-    return Annonce(
+      return Annonce(
       idAnnonce: map['id_annonce'],
       titreAnnonce: map['titre_annonce'],
       descriptionAnnonce: map['description'],
@@ -88,7 +88,7 @@ class Annonce {
       idUtilPublieur: map['util_publieur'] ?? 0,
       idUtilPreneur: map['id_util_rep'] ?? 0,
       image: map['image'] ?? 'https://picsum.photos/250?image=1',
-    );
+      );
     } catch (e) {
       print('Error creating Annonce object: $e');
       return Annonce(
