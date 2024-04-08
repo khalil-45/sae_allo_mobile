@@ -20,11 +20,18 @@ class Etat{
     };
   }
 
-  static Etat fromMap(Map<String, dynamic> map) {
-    return Etat(
-      id_Etat: map['id_etat'],
-      nom_Etat: map['nom_etat'],
-    );
+  static Etat fromMap(Map<String,dynamic> map) {
+    print('Map: $map : ${map.runtimeType}');
+    try {
+      return Etat(
+        id_Etat: map['id_etat'],
+        nom_Etat: map['nom_etat'],
+      );
+    } catch (e) {
+      // Handle the exception here
+      print('Error while creating Etat object: $e');
+      return Etat(id_Etat: 0, nom_Etat: 'Error');
+    }
   }
 
   @override

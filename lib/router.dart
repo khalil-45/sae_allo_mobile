@@ -42,9 +42,12 @@ class AppRouter {
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) {
-          return const HomePage();
-        },
+        pageBuilder: (context, state) => MaterialPage(
+          child: Scaffold(
+            body: HomePage(),
+            bottomNavigationBar: BottomNavBar(router),
+          ),
+        ),
         routes: [GoRoute(
               path: 'annonces/:id',
               parentNavigatorKey: _goRouterKey,
@@ -58,7 +61,7 @@ class AppRouter {
               ),
             ),
           GoRoute(
-            path: '/mes-annonces',
+            path: 'mes-annonces',
             parentNavigatorKey: _goRouterKey,
             pageBuilder: (context, state) => MaterialPage(
               child: Scaffold(

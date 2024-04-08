@@ -1,26 +1,68 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons.dart';
+import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
 
-class ConnexionPage extends StatelessWidget {
+class ConnexionPage extends StatefulWidget {
   ConnexionPage({Key? key}) : super(key: key);
 
+
+
+  @override
+  _ConnexionPageState createState() => _ConnexionPageState();
+
+}
+
+class _ConnexionPageState extends State<ConnexionPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  SupabaseClient supabase = Supabase.instance.client;
-
-  Future<void> signInWithEmail() async {
-
-  final AuthResponse res = await supabase.auth.signInWithPassword(
-    email: emailController.text,
-    password: passwordController.text,
-  );
-}
 
   @override
   Widget build(BuildContext context) {
+
+
+  Future<void> signInWithEmail() async {
+    try {
+      log('signInWithEmail: ${emailController.text}');
+      log('signInWithEmail: ${passwordController.text}');
+
+      final res = await UserProvider().userExists(emailController.text, passwordController.text);
+      // log(res.toString());
+      if (res.id_Util == -1) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Utilisateur non trouvé'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }else{
+        context.go('/home');
+      }
+
+    }on AuthException catch (e) {
+      log('signInWithEmail: ${e.message}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }catch (e) {
+      log('signInWithEmail: ${e.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,7 +104,7 @@ class ConnexionPage extends StatelessWidget {
                 controller: passwordController,
               ),
               const SizedBox(height: 16.0), // Add some space between the input fields and the button
-              buttonConnexion(context, signInWithEmail),
+              buttonConnexion(context, function: signInWithEmail),
               const SizedBox(height: 16.0), // Add some space between the button and the text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -5,7 +5,7 @@ import 'package:sae_allo_mobile/model/Categorie.dart';
 
 
 
-class cat_Provider{
+class CatProvider{
 
   Stream<List<Categorie>> get categories {
     try {
@@ -31,17 +31,23 @@ class cat_Provider{
   }
 
 
-  getCategorie(String nom_Categorie) async {
+  getCategorie(int idCat) async {
+    Categorie nonTrouve = Categorie(
+      id_Cat: 0,
+      nom_Cat: 'Catégorie non trouvée',
+    );
     try {
-      final categories = supabase.from('categorie').select();
+      final tables = supabase.from('categorie').select().eq('id_cat', idCat);
 
-      final response = await categories.eq('nom_categorie', nom_Categorie);
-
-      return Categorie.fromMap(response.first);
+      if (tables.asStream().first != null) {
+        return Categorie.fromMap(await tables.then((value) => value.first));
+      } else {
+        return nonTrouve;
+      }
 
     } catch (error) {
       print('Erreur lors de la récupération de la catégorie: $error');
-      return Categorie(id_Cat: -1, nom_Cat: 'Erreur');
+      return nonTrouve;
     }
   }
 

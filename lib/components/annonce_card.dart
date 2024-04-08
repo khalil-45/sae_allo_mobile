@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../model/annonce.dart';
+import '../model/Annonce.dart';
 
 class AnnonceCardWidget extends StatefulWidget {
-  final Annonce? annonceRef;
+  final Annonce annonceRef;
 
-  const AnnonceCardWidget({super.key, this.annonceRef});
+  const AnnonceCardWidget({super.key, required this.annonceRef});
 
   @override
   _AnnonceCardWidgetState createState() => _AnnonceCardWidgetState();

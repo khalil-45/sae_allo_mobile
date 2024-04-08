@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons.dart';
+import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
+import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+
 
 class InscriptionPage extends StatefulWidget {
   const InscriptionPage({Key? key}) : super(key: key);
@@ -22,60 +25,74 @@ class _InscriptionPageState extends State<InscriptionPage> {
 
   SupabaseClient supabase = Supabase.instance.client;
 
-  Future<void> signUpNewUser(String email, String motDePasse, String prenom,
-      String nom, String phone, String pseudo) async {
-    try {
-      if (email != null && email.isNotEmpty) {
-        await supabase.auth.signUp(
-          email: email,
-          password: motDePasse,
-          data: {
-            'prenom': prenom,
-            'nom': nom,
-            'pseudo': pseudo,
-            'phone': phone
-          },
-        );
-      } else if (phone != null && phone.isNotEmpty) {
-        await supabase.auth.signUp(
-          phone: phone,
-          password: motDePasse,
-          data: {
-            'prenom': prenom,
-            'nom': nom,
-            'pseudo': pseudo,
-            'email': email
-          },
-        );
-      } else {
-        throw Exception(
-            'Vous devez fournir soit un email, soit un numéro de téléphone');
-      }
-
-      context.go('/home');
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Erreur'),
-            content: Text(e.toString()),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+
+
+  Future<void> signUpNewUser() async {
+    try {
+      String email = emailController.text;
+      String motDePasse = passwordController.text;
+      String prenom = firstNameController.text;
+      String nom = lastNameController.text;
+      String phone = phoneController.text;
+      String pseudo = pseudoController.text;
+
+      if (email != null && email.isNotEmpty) {
+        UserProvider().addUser(Utilisateur(
+          id_Util: -1,
+          pseudo_Util: pseudo,
+          mdp_util: motDePasse,
+          nom_Util: nom,
+          prenom_Util: prenom,
+          email_Util: email,
+          telephone: phone,
+        ));
+      } else if (phone != null && phone.isNotEmpty) {
+        UserProvider().addUser(Utilisateur(
+          id_Util: -1,
+          pseudo_Util: pseudo,
+          mdp_util: motDePasse,
+          nom_Util: nom,
+          prenom_Util: prenom,
+          email_Util: email,
+          telephone: phone,
+        ));
+      } 
+
+      context.go('/home');
+
+      
+    } on AuthException catch (e) {
+      log(e.message);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );   
+    } on PostgrestException catch (e) {
+      log('Erreur lors de l\'inscription: ${e.message}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+    catch (e) {
+      log('Erreur lors de l\'inscription: ${e.toString()}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Une erreur est survenue lors de l\'inscription"),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+    }
+  }
+
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -159,12 +176,6 @@ class _InscriptionPageState extends State<InscriptionPage> {
               const SizedBox(height: 16.0), 
               buttonInscription(
                 context,
-                emailController,
-                passwordController,
-                firstNameController,
-                lastNameController,
-                phoneController,
-                pseudoController,
                 signUpNewUser,
               ),
             ],

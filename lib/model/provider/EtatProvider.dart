@@ -27,17 +27,25 @@ class EtatProvider{
     }
   }
 
-  getEtat(String nom_Etat) async {
+  Future<Etat> getEtat(int idEtat) async {
+    Etat nonTrouve = Etat(
+      id_Etat: 0,
+      nom_Etat: 'Etat non trouvé',
+    );
     try {
-      final etats = supabase.from('etat').select();
+      final tables = supabase.from('etat').select().eq('id_etat', idEtat);
 
-      final response = await etats.eq('nom_etat', nom_Etat);
+      final etat = await tables.then((value) => Etat.fromMap(value.first));
 
-      return Etat.fromMap(response.first);
+      if (tables.asStream().first != null) {
+        return etat;
+      } else {
+        return nonTrouve;
+      }
 
     } catch (error) {
       print('Erreur lors de la récupération de l\'etat: $error');
-      return Etat(id_Etat: -1, nom_Etat: 'Erreur');
+      return nonTrouve;
     }
   }
 

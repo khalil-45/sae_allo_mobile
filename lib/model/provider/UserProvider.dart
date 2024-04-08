@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sae_allo_mobile/main.dart';
 import 'package:sae_allo_mobile/model/Utilisateurs.dart';
 
@@ -27,7 +29,7 @@ class UserProvider{
   Future<void> addUser(Utilisateur utilisateur) async {
     try {
       // On ajoute l'utilisateur dans la base de données
-      await supabase.from('utilisateur').insert(utilisateur.toMap());
+      await supabase.from('utilisateur').insert(utilisateur.toInsert());
     } catch (error) {
       // Gérer l'erreur ici
       print('Erreur lors de l\'ajout de l\'utilisateur: $error');
@@ -35,33 +37,47 @@ class UserProvider{
   }
 
   // Fonction pour verifier si un utilisateur existe
-  userExists(String pseudo, String mdp) async {
+  Future<Utilisateur> userExists(String pseudo, String mdp)  {
     try {
       // On récupère les utilisateurs
-      final utilisateurs = supabase.from('utilisateur').select();
+      final utilisateurs = supabase.from('utilisateur').select().eq('email_util', pseudo).eq('mdp_util', mdp);
 
-      // On vérifie si l'utilisateur existe
-      final response = await utilisateurs.eq('pseudo_util', pseudo).eq('mdp_util', mdp);
+      final utilisateur = utilisateurs.asStream().first.then((value) => Utilisateur.fromMap(value.first));
 
-      return response;
+      return utilisateur ;
+
     } catch (error) {
       // Gérer l'erreur ici
+      log('email: $pseudo');
+      log('mdp: $mdp');
       print('Erreur lors de la vérification de l\'existence de l\'utilisateur: $error');
+      return Future.value(Utilisateur(id_Util: -1, prenom_Util: "Erreur", nom_Util: "Erreur", pseudo_Util: "Erreur", age: 1, mdp_util: "Erreur", email_Util: "Erreur", telephone: "Erreur"));
     }
   }
 
-  Utilisateur getUser(String pseudo){
+   getUser(int idUtil) async {
+    Utilisateur nonTrouve = Utilisateur(
+      id_Util: 0,
+      nom_Util: 'Utilisateur non trouvé',
+      prenom_Util: 'Aucun prénom',
+      pseudo_Util: 'Aucun pseudo',
+      age: 0,
+      mdp_util: 'Aucun mot de passe',
+      email_Util: 'Aucun email',
+      telephone: 'Aucun téléphone',
+    );
     try {
-      // On récupère les utilisateurs
-      final utilisateurs = supabase.from('utilisateur').select().eq('pseudo_Util', pseudo);
+      final tables = supabase.from('utilisateur').select().eq('id_util', idUtil);
 
-      // On retourne l'utilisateur
-      return Utilisateur.fromMap(utilisateurs.asStream().first);
+      if (tables.asStream().first != null) {
+        return Utilisateur.fromMap(await tables.then((value) => value.first));
+      } else {
+        return nonTrouve;
+      }
 
     } catch (error) {
-      // Gérer l'erreur ici
       print('Erreur lors de la récupération de l\'utilisateur: $error');
-      return Utilisateur(id_Util: -1, prenom_Util: "Erreur", nom_Util: "Erreur", pseudo_Util: "Erreur", age: 1);
+      return nonTrouve;
     }
   }
 
