@@ -67,32 +67,28 @@ class Annonce {
     return await object;
   }
 
+factory Annonce.fromMap(Map<String, dynamic> map) {
 
-  factory Annonce.fromMap( map)  {
-    for (var key in map.keys) {
-      print('Key: $key  : ${map[key]} , ${map[key].runtimeType}' );
-    }
-
-    try {
-
-
-
-      return Annonce(
-      idAnnonce: map['id_annonce'],
-      titreAnnonce: map['titre_annonce'],
-      descriptionAnnonce: map['description'],
-      dateAnnonce: DateTime.parse(map['date_debut']),
-      dateFinAnnonce: DateTime.parse(map['date_fin']),
-      idEtat: map['etat'] ?? 0,
-      idCategorie: map['categorie'] ?? 0,
-      idUtilPublieur: map['util_publieur'] ?? 0,
-      idUtilPreneur: map['id_util_rep'] ?? 0,
+  for (var item in map.entries) {
+    log('Key: ${item.key}, Value: ${item.value} : ${item.value.runtimeType}');
+  }
+  try {
+    return Annonce(
+      idAnnonce: map['id_annonce'] ?? -1,
+      titreAnnonce: map['titre_annonce'] ?? 'Annonce non trouvée',
+      descriptionAnnonce: map['description'] ?? 'Aucune annonce trouvée',
+      dateAnnonce: DateTime.tryParse(map['date_debut'] ?? '') ?? DateTime.now(),
+      dateFinAnnonce: DateTime.tryParse(map['date_fin'] ?? '') ?? DateTime.now(),
+      idEtat: int.tryParse(map['id_etat'].toString()) ?? 0,
+      idCategorie: int.tryParse(map['id_cat'].toString()) ?? 0,
+      idUtilPublieur: int.tryParse(map['id_util_pub'].toString()) ?? 0,
+      idUtilPreneur: int.tryParse(map['id_util_rep'].toString()) ?? 0,
       image: map['image'] ?? 'https://picsum.photos/250?image=1',
-      );
-    } catch (e) {
-      print('Error creating Annonce object: $e');
-      return Annonce(
-      idAnnonce: 0,
+    );
+  } catch (e) {
+    print('Error creating Annonce object: $e');
+    return Annonce(
+      idAnnonce: -1,
       titreAnnonce: 'Annonce non trouvée',
       descriptionAnnonce: 'Aucune annonce trouvée',
       image: 'https://picsum.photos/250?image=1',
@@ -104,9 +100,13 @@ class Annonce {
       idUtilPublieur: 0,
       idEtat: 0,
     );
-    }
   }
+}
 
+  @override
+  String toString() {
+    return 'Annonce{idAnnonce: $idAnnonce, titreAnnonce: $titreAnnonce, descriptionAnnonce: $descriptionAnnonce, dateAnnonce: $dateAnnonce, dateFinAnnonce: $dateFinAnnonce, idEtat: $idEtat, idCategorie: $idCategorie, idUtilPublieur: $idUtilPublieur, idUtilPreneur: $idUtilPreneur, isFavorited: $isFavorited}';
+  }
 
 
 }

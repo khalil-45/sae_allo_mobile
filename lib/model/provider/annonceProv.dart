@@ -3,6 +3,7 @@ import 'package:sae_allo_mobile/model/Annonce.dart';
 import 'package:sae_allo_mobile/model/Categorie.dart';
 import 'package:sae_allo_mobile/model/Etat.dart';
 import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AnnonceProv {
 
@@ -21,7 +22,8 @@ class AnnonceProv {
     }
   }
 
-  Annonce getAnnonce(int idAnnonce) {
+
+  Stream<List<Annonce>> getAnnonce(int idAnnonce) {
     Annonce nonTrouve = Annonce(
       idAnnonce: 0,
       titreAnnonce: 'Annonce non trouvée',
@@ -38,17 +40,14 @@ class AnnonceProv {
     try {
       final tables = supabase.from('annonce').select().eq('id_annonce', idAnnonce);
 
-      if (tables.asStream().first != null) {
-        return Annonce.fromMap(tables.asStream().first.then((value) => value.first));
-      } else {
-        return nonTrouve;
-      }
+       return tables.asStream().map((reponse) =>
+        reponse.map((row) => Annonce.fromMap(row)).toList()
+      );
 
     } catch (error) {
       print('Erreur lors de la récupération de l\'annonce: $error');
-      return nonTrouve;
+      return Stream.value([nonTrouve]);
     }
   }
-
 
 }

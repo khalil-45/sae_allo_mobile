@@ -30,8 +30,7 @@ class CatProvider{
     }
   }
 
-
-  getCategorie(int idCat) async {
+  Stream<List<Categorie>> getCategorie(int idCat) {
     Categorie nonTrouve = Categorie(
       id_Cat: 0,
       nom_Cat: 'Catégorie non trouvée',
@@ -39,18 +38,20 @@ class CatProvider{
     try {
       final tables = supabase.from('categorie').select().eq('id_cat', idCat);
 
-      if (tables.asStream().first != null) {
-        return Categorie.fromMap(await tables.then((value) => value.first));
-      } else {
-        return nonTrouve;
-      }
+       return tables.asStream().map((reponse) =>
+        reponse.map((row) => Categorie.fromMap(row)).toList()
+      );
+
 
     } catch (error) {
-      print('Erreur lors de la récupération de la catégorie: $error');
-      return nonTrouve;
-    }
-  }
+
+      print('Categorie non trouvée');
+      return Stream.value([nonTrouve]);
+
+    
+    } 
 
 
+}
 
 }
