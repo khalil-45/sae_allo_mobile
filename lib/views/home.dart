@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/annonce_card.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_allo_mobile/model/Categorie.dart';
+import 'package:sae_allo_mobile/model/Etat.dart';
+import 'package:sae_allo_mobile/model/Utilisateurs.dart';
 import '../components/empty_state_widget.dart';
-import '../model/annonce.dart';
-import 'package:supabase/supabase.dart';
+import '../model/Annonce.dart';
+import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late Future<List<Annonce>> _future;
+  late Stream<List<Annonce>> _future;
 
   @override
   void initState() {
@@ -25,19 +28,12 @@ class _HomePageState extends State<HomePage> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       HapticFeedback.mediumImpact();
     });
-    _future = _fetchAnnonces();
-  }
-
-  Future<List<Annonce>> _fetchAnnonces() async {
-    final response = await Supabase.instance.client
-      .from('annonce')
-      .select();
-
-    return (response as List).map((json) => Annonce.fromJson(json)).toList();
+    _future = AnnonceProv().annonces();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -73,8 +69,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(14),
-                  child: FutureBuilder<List<Annonce>>(
-                    future: _future,
+                  child: StreamBuilder<List<Annonce>>(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -115,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                               );
                       }
-                    },
+                    }, stream: _future,
                   ),
                 ),
               ),

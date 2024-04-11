@@ -1,81 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'vues/connexion_page.dart';
-import 'vues/welcome.dart';
-import 'vues/home.dart';
+import 'package:sae_allo_mobile/views/home.dart';
+import 'views/connexion_page.dart';
+import 'views/welcome.dart';
 import 'components/bottom_navigation_bar.dart';
-import 'vues/detail_annonce.dart';
-import 'model/annonce.dart';
-import 'vues/mes_annonces.dart';
-import 'vues/inscription_page.dart';
+import 'views/detail_annonce.dart';
+import 'views/mes_annonces.dart';
+import 'views/inscription_page.dart';
+
+final GlobalKey<NavigatorState> _goRouterKey = GlobalKey<NavigatorState>();
+
 
 class AppRouter {
-  final GlobalKey<NavigatorState> _rootNavigatorKey =
-      GlobalKey<NavigatorState>();
-  late final GoRouter router;
 
-  AppRouter() {
-    router = GoRouter(
-      navigatorKey: _rootNavigatorKey,
-      initialLocation: '/welcome',
-      routes: [
-        GoRoute(
-          path: '/welcome',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: WelcomePage()),
-        ),
-        GoRoute(
-          path: '/connexion',
-          pageBuilder: (context, state) =>
-              MaterialPage(child: ConnexionPage()),
-        ),
-        GoRoute(
-          path:'/inscription',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: InscriptionPage()),
-        ),
-        GoRoute(
-          path: '/home',
-          pageBuilder: (context, state) => MaterialPage(
-            child: Scaffold(
-              body: const HomePage(),
-              bottomNavigationBar: BottomNavBar(router),
-            ),
+
+  get router => _router;
+
+
+  late final GoRouter _router = GoRouter(
+    initialLocation: '/',
+    navigatorKey: _goRouterKey,
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        builder: (context, state) {
+          return const WelcomePage();
+        }
+      ),
+      GoRoute(
+        path: '/connexion',
+        builder: (context, state) {
+          return ConnexionPage();
+        },
+      ),
+      GoRoute(
+        path: '/inscription',
+        builder: (context, state) {
+          return const InscriptionPage();
+        },
+      ),
+      GoRoute(
+        path: '/home',
+        pageBuilder: (context, state) => MaterialPage(
+          child: Scaffold(
+            body: HomePage(),
+            bottomNavigationBar: BottomNavBar(router),
           ),
-          routes: [
-            GoRoute(
+        ),
+        routes: [GoRoute(
               path: 'annonces/:id',
+              parentNavigatorKey: _goRouterKey,
               pageBuilder: (context, state) => MaterialPage(
                 child: Scaffold(
                   body: AnnonceDetailsWidget(
-                    annonceRef: Annonce(
-                      id: 5,
-                      name: 'Annonce 5',
-                      description: 'Description de l\'annonce 5',
-                      image: 'https://picsum.photos/250?image=13',
-                      isFavorited: false,
-                      dateDebut: DateTime.now(),
-                      dateFin: DateTime.now(),
-                      categorie: 'Categorie 3',
-                    ),
+                    idAnnonce: int.parse(state.pathParameters['id']!),
                   ),
                   bottomNavigationBar: BottomNavBar(router),
                 ),
               ),
             ),
-          ],
-        ),
-        GoRoute(
-          path: '/mes-annonces',
-          pageBuilder: (context, state) => MaterialPage(
-            child: Scaffold(
-              body: MesAnnoncesPage(),
-              bottomNavigationBar: BottomNavBar(router),
+          GoRoute(
+            path: 'mes-annonces',
+            parentNavigatorKey: _goRouterKey,
+            pageBuilder: (context, state) => MaterialPage(
+              child: Scaffold(
+                body: MesAnnoncesPage(),
+                bottomNavigationBar: BottomNavBar(router),
+              ),
             ),
           ),
-        ),
-      ],
+        ]
+      ),
+    ],
       errorPageBuilder: (context, state) => MaterialPage(
         child: Scaffold(
           body: Center(
@@ -93,5 +90,5 @@ class AppRouter {
         ),
       ),
     );
-  }
 }
+
