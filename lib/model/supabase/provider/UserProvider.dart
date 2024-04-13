@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:sae_allo_mobile/main.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 
 class UserProvider{
 

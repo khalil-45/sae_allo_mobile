@@ -1,7 +1,7 @@
 
 
 import 'package:sae_allo_mobile/main.dart';
-import 'package:sae_allo_mobile/model/Etat.dart';
+import 'package:sae_allo_mobile/model/supabase/Etat.dart';
 
 class EtatProvider{
 

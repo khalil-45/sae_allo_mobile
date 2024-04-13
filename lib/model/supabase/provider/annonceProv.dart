@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:sae_allo_mobile/main.dart';
-import 'package:sae_allo_mobile/model/Annonce.dart';
-import 'package:sae_allo_mobile/model/Categorie.dart';
-import 'package:sae_allo_mobile/model/Etat.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:sae_allo_mobile/model/supabase/Annonce.dart';
+import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
+import 'package:sae_allo_mobile/model/supabase/Etat.dart';
+import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AnnonceProv {

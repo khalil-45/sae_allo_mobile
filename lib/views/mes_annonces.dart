@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sae_allo_mobile/const.dart';
-import 'package:sae_allo_mobile/model/Annonce.dart';
+import 'package:sae_allo_mobile/model/supabase/Annonce.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/annonceProv.dart';
 
 class MesAnnoncesPage extends StatefulWidget {
   @override

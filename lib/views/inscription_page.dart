@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons.dart';
-import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/UserProvider.dart';
+import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 
 
 class InscriptionPage extends StatefulWidget {

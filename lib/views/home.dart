@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/annonce_card.dart';
-import 'package:sae_allo_mobile/model/Categorie.dart';
-import 'package:sae_allo_mobile/model/Etat.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
+import 'package:sae_allo_mobile/model/supabase/Etat.dart';
+import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 import 'package:go_router/go_router.dart';
 import '../components/empty_state_widget.dart';
-import '../model/Annonce.dart';
-import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
+import '../model/supabase/Annonce.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/annonceProv.dart';
 
 
 class HomePage extends StatefulWidget {
