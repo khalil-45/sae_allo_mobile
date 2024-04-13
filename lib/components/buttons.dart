@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nice_buttons/nice_buttons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
-import '../../theme.dart' as theme;
+import '../asset/theme.dart' as theme;
 
 
 NiceButtons buttonConnexion(BuildContext context, {Function? function}) {
@@ -21,7 +21,7 @@ return NiceButtons(
                 if (function != null) {
                   function();
                 } else {
-                  GoRouter.of(context).go('/connexion');
+                  GoRouter.of(context).go('/sign');
                 }
               });
             },
@@ -53,7 +53,7 @@ return NiceButtons(
               });
             },
             child: Text(
-              'Inscription',
+              '/sign/up',
               style: GoogleFonts.sora(
                 textStyle: const TextStyle(
                   color: Colors.white,
@@ -76,7 +76,7 @@ return NiceButtons(
             onTap: (finish) {
               Timer(const Duration(seconds: 1), () {
                 finish();
-                GoRouter.of(context).go('/connexion');
+                GoRouter.of(context).go('/sign');
               });
             },
             child: Text(

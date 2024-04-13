@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:sae_allo_mobile/const.dart';
+import 'package:sae_allo_mobile/model/Annonce.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
 
 class MesAnnoncesPage extends StatefulWidget {
   @override
@@ -7,27 +12,65 @@ class MesAnnoncesPage extends StatefulWidget {
 }
 
 class _MesAnnoncesPageState extends State<MesAnnoncesPage> {
-  // Remplacez ceci par la liste de vos annonces
-  List<Map<String, dynamic>> mesAnnonces = [
-    {'title': 'Annonce 1', 'description': 'Description de l\'annonce 1'},
-    {'title': 'Annonce 2', 'description': 'Description de l\'annonce 2'},
-    // Ajoutez plus d'annonces ici
-  ];
+  late Stream<List<Annonce>> mesAnnoncesStream;
+  late final int id_Util;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMesAnnonces();
+  }
+
+  void fetchMesAnnonces() async {
+    id_Util = user.id_Util;
+    mesAnnoncesStream = AnnonceProv().annoncesByUser(id_Util);
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mes Annonces'),
+        title: const Text('Mes Annonces'),
       ),
-      body: ListView.builder(
-        itemCount: mesAnnonces.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(mesAnnonces[index]['title']),
-            subtitle: Text(mesAnnonces[index]['description']),
-            onTap: () {
-              context.go('/home/annonces/${index.toString()}');
+      body: StreamBuilder<List<Annonce>>(
+        stream: mesAnnoncesStream,
+        builder: (context, snapshot) {
+          
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            log('Erreur lors de la récupération des annonces: ${snapshot.error}');
+            return const Center(
+              child: Text('Erreur lors de la récupération des annonces'),
+            );
+          }
+
+          final annonces = snapshot.data!;
+
+          if (annonces.isEmpty) {
+            return const Center(
+              child: Text('Aucune annonce trouvée'),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: annonces.length,
+            itemBuilder: (context, index) {
+              final annonce = annonces[index];
+              return Card(  
+                child: ListTile(
+                  title: Text(annonce.titreAnnonce),
+                    subtitle: Text('${annonce.descriptionAnnonce.substring(0, annonce.descriptionAnnonce.length > 15 ? 15 : annonce.descriptionAnnonce.length)}...'),
+                  onTap: () {
+                    context.go('/home/annonces/${annonce.idAnnonce}');
+                  },
+                ),
+              );
             },
           );
         },
@@ -42,3 +85,5 @@ class _MesAnnoncesPageState extends State<MesAnnoncesPage> {
     );
   }
 }
+
+

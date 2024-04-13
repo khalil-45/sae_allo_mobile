@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class Categorie{
 
   int id_Cat;
@@ -22,7 +24,10 @@ class Categorie{
     }
 
 
-  static Categorie fromMap(Map<String, dynamic> map) {
+  factory Categorie.fromMap(map) {
+
+    log('Categorie.fromMap: $map');
+
     return Categorie(
       id_Cat: map['id_cat'],
       nom_Cat: map['nom_cat'],
