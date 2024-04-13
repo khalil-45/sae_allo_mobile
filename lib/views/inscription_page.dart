@@ -61,7 +61,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
         ));
       } 
 
-      context.go('/home');
+      context.go('/sign');
 
       
     } on AuthException catch (e) {

@@ -5,6 +5,7 @@ import 'package:sae_allo_mobile/components/annonce_card.dart';
 import 'package:sae_allo_mobile/model/Categorie.dart';
 import 'package:sae_allo_mobile/model/Etat.dart';
 import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:go_router/go_router.dart';
 import '../components/empty_state_widget.dart';
 import '../model/Annonce.dart';
 import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
@@ -65,6 +66,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/home/annonces/add');
+                },
+                child: Text('Ajouter une annonce'),
               ),
               Expanded(
                 child: Padding(

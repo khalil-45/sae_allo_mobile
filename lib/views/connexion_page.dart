@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons.dart';
 import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
+import 'package:sae_allo_mobile/const.dart';
+
 
 class ConnexionPage extends StatefulWidget {
   ConnexionPage({Key? key}) : super(key: key);
@@ -40,6 +42,9 @@ class _ConnexionPageState extends State<ConnexionPage> {
           ),
         );
       }else{
+        user.email = emailController.text;
+        user.name = res.nom_Util;
+        user.id_Util = res.id_Util;
         context.go('/home');
       }
 
@@ -112,7 +117,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   const Text("Pas inscrit ?"),
                   TextButton(
                     onPressed: () {
-                      context.go('/inscription');
+                      context.go('/sign/up');
                     },
                     child: const Text(
                       "S'inscrire",

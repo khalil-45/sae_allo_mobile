@@ -7,7 +7,7 @@ import 'package:sae_allo_mobile/model/Categorie.dart';
 
 class CatProvider{
 
-  Stream<List<Categorie>> get categories {
+  Stream<List<Categorie>>  categories() {
     try {
       final tables = supabase.from('categorie').select();
 

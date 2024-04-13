@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavBar extends StatefulWidget {
-  final GoRouter router;
-  const BottomNavBar(this.router, {Key? key}) : super(key: key);
+  const BottomNavBar( {Key? key}) : super(key: key);
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -11,7 +12,6 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -34,16 +34,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
       onTap: (index) {
         setState(() {
           _selectedIndex = index;
+          log(_selectedIndex.toString());
         });
         switch (index) {
           case 0:
-            widget.router.go('/home');
+            context.go('/home');
+            log('home');
             break;
           case 1:
-            widget.router.go('/mes-annonces');
+            context.go('/home/annonces');
+            log('annonces');
             break;
           case 2:
-            widget.router.go('/profil');
+            context.go('/profil');
+            log('profil');
             break;
         }
       },
