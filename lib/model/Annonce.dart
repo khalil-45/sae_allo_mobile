@@ -81,7 +81,7 @@ factory Annonce.fromMap(Map<String, dynamic> map) {
       dateFinAnnonce: DateTime.tryParse(map['date_fin'] ?? '') ?? DateTime.now(),
       idEtat: int.tryParse(map['id_etat'].toString()) ?? 0,
       idCategorie: int.tryParse(map['id_cat'].toString()) ?? 0,
-      idUtilPublieur: int.tryParse(map['id_util_pub'].toString()) ?? 0,
+      idUtilPublieur: map['id_util_pub'] ?? 0,
       idUtilPreneur: int.tryParse(map['id_util_rep'].toString()) ?? 0,
       image: map['image'] ?? 'https://picsum.photos/250?image=1',
     );
