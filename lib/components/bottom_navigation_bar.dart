@@ -46,7 +46,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             log('annonces');
             break;
           case 2:
-            context.go('/profil');
+            context.go('/home/profil');
             log('profil');
             break;
         }

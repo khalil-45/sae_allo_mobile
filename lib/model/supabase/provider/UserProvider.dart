@@ -55,7 +55,7 @@ class UserProvider{
     }
   }
 
-   getUser(int idUtil) async {
+  Future<Utilisateur> getUser(int idUtil) async {
     Utilisateur nonTrouve = Utilisateur(
       id_Util: 0,
       nom_Util: 'Utilisateur non trouvé',

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:path/path.dart';
+import 'package:sae_allo_mobile/model/sqflite/providers/objetProv.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'dart:async';
@@ -43,6 +44,7 @@ class BD_locale {
         id_Objet INTEGER PRIMARY KEY AUTOINCREMENT,
         nom_Objet TEXT ,
         description_objet TEXT ,
+        image_objet TEXT ,
         id_Cat INTEGER ,
         FOREIGN KEY (id_Cat) REFERENCES CATEGORIE_OBJET(id_Cat)
       )
@@ -68,6 +70,8 @@ class BD_locale {
       )
       ''');
       log("Table EST_PRETE créée");
+
+      ObjetProv().insertTest();
 
     } catch (e) {
       log('Erreur lors de la création de la base de données: $e');
