@@ -1,13 +1,5 @@
 import 'dart:developer';
 
-import 'package:sae_allo_mobile/model/Categorie.dart';
-import 'package:sae_allo_mobile/model/Etat.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
-import 'package:sae_allo_mobile/model/provider/CatProvider.dart';
-import 'package:sae_allo_mobile/model/provider/EtatProvider.dart';
-import 'package:sae_allo_mobile/model/provider/UserProvider.dart';
-
-
 class Annonce {
 
   final int idAnnonce;
@@ -63,9 +55,6 @@ class Annonce {
     };
   }
 
-  static  _toObject(Future<Object> object) async {
-    return await object;
-  }
 
 factory Annonce.fromMap(Map<String, dynamic> map) {
 

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:sae_allo_mobile/main.dart';
-import 'package:sae_allo_mobile/model/Utilisateurs.dart';
+import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 
 class UserProvider{
 
@@ -55,7 +55,7 @@ class UserProvider{
     }
   }
 
-   getUser(int idUtil) async {
+  Future<Utilisateur> getUser(int idUtil) async {
     Utilisateur nonTrouve = Utilisateur(
       id_Util: 0,
       nom_Util: 'Utilisateur non trouvé',

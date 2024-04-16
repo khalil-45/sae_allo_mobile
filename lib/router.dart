@@ -9,6 +9,10 @@ import 'package:sae_allo_mobile/views/inscription_page.dart';
 import 'package:sae_allo_mobile/views/mes_annonces.dart';
 import 'package:sae_allo_mobile/views/welcome.dart';
 import 'components/bottom_navigation_bar.dart';
+import 'package:sae_allo_mobile/views/profil.dart';
+import 'package:sae_allo_mobile/views/addobjet.dart';
+import 'package:sae_allo_mobile/views/objet_dertail.dart';
+
 
 final GlobalKey<NavigatorState> _goRouterKey = GlobalKey<NavigatorState>();
 
@@ -50,6 +54,49 @@ class AppRouter {
           ),
           routes: [
             GoRoute(
+              path: 'profil',
+              pageBuilder: (context, state) => const MaterialPage(
+                child: Scaffold(
+                  body: profil(),
+                  bottomNavigationBar: BottomNavBar(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: 'objet',
+              pageBuilder: (context, state) => const MaterialPage(
+                child: Scaffold(
+                  body: HomePage(),
+                  bottomNavigationBar: BottomNavBar(),
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  path: ':id',
+                  pageBuilder: (context, state) {
+                    final id = state.pathParameters['id'];
+                    if (id != null && int.tryParse(id) != null) {
+                      return MaterialPage(
+                        child: Scaffold(
+                          body: ObjetDetailsWidget(
+                            idObjet: int.parse(id),
+                          ),
+                          bottomNavigationBar: BottomNavBar(),
+                        ),
+                      );
+                    } else {
+                      return MaterialPage(
+                        child: Scaffold(
+                          body: AddObjetPage(),
+                          bottomNavigationBar: BottomNavBar(),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
               path: 'annonces',
               pageBuilder: (context, state) => MaterialPage(
                 child: Scaffold(
@@ -83,7 +130,6 @@ class AppRouter {
                 ),
               ],
             ),
-
           ],
         ),
         GoRoute(

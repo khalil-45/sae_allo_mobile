@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_allo_mobile/const.dart';
-import 'package:sae_allo_mobile/model/Annonce.dart';
-import 'package:sae_allo_mobile/model/Categorie.dart';
+import 'package:sae_allo_mobile/model/supabase/Annonce.dart';
+import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/annonceProv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sae_allo_mobile/model/provider/CatProvider.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/CatProvider.dart';
 
 class AddAnnoncesPage extends StatefulWidget {
   @override

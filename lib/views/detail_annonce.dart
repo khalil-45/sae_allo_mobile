@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/buttons.dart';
-import 'package:sae_allo_mobile/model/Categorie.dart';
-import '../model/Annonce.dart';
-import 'package:sae_allo_mobile/model/provider/annonceProv.dart';
-import 'package:sae_allo_mobile/model/provider/CatProvider.dart';
+import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
+import '../model/supabase/Annonce.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/annonceProv.dart';
+import 'package:sae_allo_mobile/model/supabase/provider/CatProvider.dart';
 
 class AnnonceDetailsWidget extends StatefulWidget {
   AnnonceDetailsWidget({

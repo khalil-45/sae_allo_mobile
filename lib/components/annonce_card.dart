@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../model/Annonce.dart';
+import '../model/supabase/Annonce.dart';
 
 class AnnonceCardWidget extends StatefulWidget {
   final Annonce annonceRef;

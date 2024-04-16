@@ -1,6 +1,6 @@
 
 import 'package:sae_allo_mobile/main.dart';
-import 'package:sae_allo_mobile/model/Categorie.dart';
+import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
 
 
 
