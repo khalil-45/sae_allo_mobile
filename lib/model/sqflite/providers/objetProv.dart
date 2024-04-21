@@ -6,7 +6,7 @@ class ObjetProv{
   insertTest() async {
     final db = await BD_locale.instance.database;
 
-    ObjetLocale obj = ObjetLocale(id_Objet: 1, nom_Objet: "test", description_objet: "mon objet", image_objet: "image");
+    ObjetLocale obj = ObjetLocale(id_Objet: 1, nom_Objet: "test", description_objet: "mon objet", image_objet: "image", id_Cat: 1);
 
     insertObjet(obj);
 
