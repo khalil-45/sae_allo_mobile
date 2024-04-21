@@ -92,7 +92,7 @@ return NiceButtons(
           );
 }
 
-NiceButtons buttonAider(BuildContext context) {
+NiceButtons buttonAider(BuildContext context, {Function? function,int? idCat}) {
 return NiceButtons(
             startColor: theme.Theme.primaryColor,
             endColor: theme.Theme.primaryColor,
@@ -104,6 +104,9 @@ return NiceButtons(
               Timer(const Duration(seconds: 1), () {
                 finish();
               });
+              if (function != null && idCat != null) {
+                function(idCat);
+              } 
             },
             child: Text(
               'Aider',

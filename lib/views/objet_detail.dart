@@ -63,8 +63,9 @@ class _ObjetDetailsWidgetState extends State<ObjetDetailsWidget> {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                        objetData.image_objet ??
-                            'https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                        objetData.image_objet.trim() == '' || objetData.image_objet.trim() == ' '
+                            ? 'https://picsum.photos/200/300?random=1'
+                            : objetData.image_objet
                       ),
                     ),
                     borderRadius: const BorderRadius.only(

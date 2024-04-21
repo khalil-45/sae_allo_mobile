@@ -11,7 +11,7 @@ import 'package:sae_allo_mobile/views/welcome.dart';
 import 'components/bottom_navigation_bar.dart';
 import 'package:sae_allo_mobile/views/profil.dart';
 import 'package:sae_allo_mobile/views/addobjet.dart';
-import 'package:sae_allo_mobile/views/objet_dertail.dart';
+import 'package:sae_allo_mobile/views/objet_detail.dart';
 
 
 final GlobalKey<NavigatorState> _goRouterKey = GlobalKey<NavigatorState>();

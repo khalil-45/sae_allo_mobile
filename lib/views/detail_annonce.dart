@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:sae_allo_mobile/components/buttons.dart';
+import 'package:sae_allo_mobile/model/sqflite/classe/objet.dart';
+import 'package:sae_allo_mobile/model/sqflite/providers/objetProv.dart';
 import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
 import '../model/supabase/Annonce.dart';
 import 'package:sae_allo_mobile/model/supabase/provider/annonceProv.dart';
@@ -37,8 +39,77 @@ class _AnnonceDetailsWidgetState extends State<AnnonceDetailsWidget> {
 
   void _fetchAnnonce() {
     annonce = AnnonceProv().getAnnonce(widget.idAnnonce);
-    
   }
+
+  affichePop(int idCategorie) {
+    final Future<List<ObjetLocale>> obj = ObjetProv().getObjetByCat(idCategorie);
+    int _idObjet = 0; // Variable pour stocker l'ID de l'objet sélectionné
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sélectionnez un objet'),
+          content: FutureBuilder<List<ObjetLocale>>(
+            future: obj,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Erreur: ${snapshot.error}'),
+                );
+              } else if (snapshot.hasData) {
+                return snapshot.data!.isEmpty
+                    ? const Center(
+                        child: Text('Aucune donnée'),
+                      )
+                    : DropdownButtonFormField<int>(
+                        items: snapshot.data!.map((objet) {
+                          return DropdownMenuItem<int>(
+                            value: objet.id_Objet,
+                            child: Text(objet.nom_Objet),
+                          );
+                        }).toList(),
+                        onChanged: (value) => _idObjet = value!,
+                      );
+              } else {
+                return Column(
+                  children: [
+                    const Text('Aucune donnée'),
+                    ElevatedButton(
+                      onPressed: () {
+                        debugPrint("ID de l'objet sélectionné: $_idObjet");
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Valider'),
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () {
+                log("ID de l'objet sélectionné: $_idObjet");
+                Navigator.of(context).pop();
+              },
+              child: Text('Valider'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
 @override
 Widget build(BuildContext context) {
@@ -154,7 +225,7 @@ Widget build(BuildContext context) {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          Center(child: buttonAider(context)),
+                          Center(child: buttonAider(context,function: affichePop,idCat: annonceData.idCategorie)),
                         ],
                       ),
                     ),
