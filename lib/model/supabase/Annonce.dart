@@ -58,9 +58,9 @@ class Annonce {
 
 factory Annonce.fromMap(Map<String, dynamic> map) {
 
-  for (var item in map.entries) {
-    log('Key: ${item.key}, Value: ${item.value} : ${item.value.runtimeType}');
-  }
+  // for (var item in map.entries) {
+  //   log('Key: ${item.key}, Value: ${item.value} : ${item.value.runtimeType}');
+  // }
   try {
     return Annonce(
       idAnnonce: map['id_annonce'] ?? -1,

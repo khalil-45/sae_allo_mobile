@@ -15,7 +15,7 @@ class BD_locale {
  Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('BBDDDD.db');
+    _database = await _initDB('BD_LOCALE.db');
     return _database!;
   }
 
@@ -62,6 +62,7 @@ class BD_locale {
       CREATE TABLE EST_PRETE(
         id_Util INTEGER,
         id_Objet INTEGER,
+        id_Annonce INTEGER,
         date_debut DATE,
         date_fin DATE,
         FOREIGN KEY (id_Util) REFERENCES UTILISATEUR(id_Util),

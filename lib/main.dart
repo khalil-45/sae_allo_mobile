@@ -15,7 +15,7 @@ Future<void> main() async {
   await BD_locale.instance.database;
 
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 

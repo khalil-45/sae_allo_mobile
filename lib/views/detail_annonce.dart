@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +27,7 @@ class _AnnonceDetailsWidgetState extends State<AnnonceDetailsWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late var annonce;
   late var categorie;
-
+  late Annonce annoncePrete;
   @override
   void initState() {
     super.initState();
@@ -43,6 +43,7 @@ class _AnnonceDetailsWidgetState extends State<AnnonceDetailsWidget> {
 
   affichePop(int idCategorie) {
     final Future<List<ObjetLocale>> obj = ObjetProv().getObjetByCat(idCategorie);
+    log("ID de la catégorie: $idCategorie");
     int _idObjet = 0; // Variable pour stocker l'ID de l'objet sélectionné
     showDialog(
       context: context,
@@ -95,11 +96,36 @@ class _AnnonceDetailsWidgetState extends State<AnnonceDetailsWidget> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Annuler'),
+              child: const Text('Annuler'),
             ),
             TextButton(
               onPressed: () {
                 log("ID de l'objet sélectionné: $_idObjet");
+
+               if (_idObjet != 0 && annoncePrete.idEtat == 1) {
+                  log('Objet va être prêté');
+                  ObjetProv().pretObjet(_idObjet, annoncePrete);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Objet prêté'),
+                    ),
+                  );
+                  context.go('/home');
+                } else {
+                  if (annoncePrete.idEtat != 1) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Annonce déjà prise'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Veuillez sélectionner un objet'),
+                      ),
+                    );
+                  }
+                }
                 Navigator.of(context).pop();
               },
               child: Text('Valider'),
@@ -129,6 +155,7 @@ Widget build(BuildContext context) {
           );
         } else if (snapshot.hasData) {
           final annonceData = snapshot.data![0];
+          annoncePrete = annonceData;
           return StreamBuilder<List<Categorie>>(
             stream: CatProvider().getCategorie(annonceData.idCategorie),
             builder: (context, snapshot) {
@@ -152,9 +179,7 @@ Widget build(BuildContext context) {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            annonceData.image ??
-                                'https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                          ),
+                            annonceData.image                          ),
                         ),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(24),
@@ -167,32 +192,53 @@ Widget build(BuildContext context) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            annonceData.titreAnnonce,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                            ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                      annonceData.titreAnnonce,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    Text(
+                                      annonceData.descriptionAnnonce,
+                                      style: const  TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        annonceData.isFavorited
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          annonceData.isFavorited = !annonceData.isFavorited;
+                                        });
+                                    },
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Etat: ${annonceData.idEtat == 1 ? 'Disponible' : 'Pris'}',
+                                    style: const  TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                          Text(
-                            annonceData.descriptionAnnonce,
-                            style: const  TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              annonceData.isFavorited
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                annonceData.isFavorited = !annonceData.isFavorited;
-                              });
-                            },
-                          ),
+                              
+                        
                           Row(
                             children: [
                               Expanded(
@@ -201,7 +247,7 @@ Widget build(BuildContext context) {
                                   style: const  TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal,
-                                  ),
+                                   ),
                                 ),
                               ),
                               Expanded(
@@ -226,10 +272,12 @@ Widget build(BuildContext context) {
                           ),
                           const SizedBox(height: 20),
                           Center(child: buttonAider(context,function: affichePop,idCat: annonceData.idCategorie)),
-                        ],
+                        
+                        ]
+                        
                       ),
-                    ),
-                  ],
+                    )
+                  ]
                 );
               } else {
                 return const Center(

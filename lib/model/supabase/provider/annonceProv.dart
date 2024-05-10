@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:sae_allo_mobile/const.dart';
 import 'package:sae_allo_mobile/main.dart';
 import 'package:sae_allo_mobile/model/supabase/Annonce.dart';
 import 'package:sae_allo_mobile/model/supabase/Categorie.dart';
@@ -8,7 +8,6 @@ import 'package:sae_allo_mobile/model/supabase/Utilisateurs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AnnonceProv {
-
 
 
   Stream<List<Annonce>> annonces() {
@@ -88,6 +87,21 @@ class AnnonceProv {
       return 0;
     }
 
-}
+  }
+
+  Future<int> updateAnnoncePreter(int idAnnonce, int idUtilPreneur) async {
+    try {
+      log('idAnnonce: $idAnnonce, idUtilPreneur: $idUtilPreneur');
+      await supabase.from('annonce').update({'id_util_rep': user.id_Util}).eq('id_annonce', idAnnonce);
+      await supabase.from('annonce').update({'id_etat': 3}).eq('id_annonce', idAnnonce);
+
+      return 1;
+
+    } catch (error) {
+      print('Erreur lors de la mise à jour de l\'annonce: $error');
+      return 0;
+    }
+
+  }
 
 }

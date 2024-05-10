@@ -45,6 +45,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
         user.email = emailController.text;
         user.name = res.nom_Util;
         user.id_Util = res.id_Util;
+        log('id : ${user.id_Util}, email : ${user.email}, name : ${user.name}');
         context.go('/home');
       }
 
@@ -60,7 +61,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
       log('signInWithEmail: ${e.toString()}');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString()),
+          content: const Text("Utilisateur non trouvé"),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );

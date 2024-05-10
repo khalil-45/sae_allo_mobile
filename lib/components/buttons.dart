@@ -53,7 +53,7 @@ return NiceButtons(
               });
             },
             child: Text(
-              '/sign/up',
+              'Inscription',
               style: GoogleFonts.sora(
                 textStyle: const TextStyle(
                   color: Colors.white,
@@ -92,10 +92,10 @@ return NiceButtons(
           );
 }
 
-NiceButtons buttonAider(BuildContext context, {Function? function,int? idCat}) {
+NiceButtons buttonAider(BuildContext context, {Function? function,int? idCat, bool? isAider}) {
 return NiceButtons(
-            startColor: theme.Theme.primaryColor,
-            endColor: theme.Theme.primaryColor,
+            startColor: isAider != null && isAider ? Colors.red : theme.Theme.primaryColor,
+            endColor: isAider != null && isAider ? Colors.red : theme.Theme.primaryColor,
             borderColor: theme.Theme.primaryColor,
             stretch: false,
             progress: true,
