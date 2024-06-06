@@ -1,9 +1,8 @@
 import 'dart:developer';
-
 import 'package:path/path.dart';
+import 'package:sae_allo_mobile/model/sqflite/providers/catProv.dart';
 import 'package:sae_allo_mobile/model/sqflite/providers/objetProv.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'dart:async';
 
 class BD_locale {
@@ -16,7 +15,7 @@ class BD_locale {
  Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('laBD.db');
+    _database = await _initDB('BD_LOCALE.db');
     return _database!;
   }
 
@@ -63,6 +62,7 @@ class BD_locale {
       CREATE TABLE EST_PRETE(
         id_Util INTEGER,
         id_Objet INTEGER,
+        id_Annonce INTEGER,
         date_debut DATE,
         date_fin DATE,
         FOREIGN KEY (id_Util) REFERENCES UTILISATEUR(id_Util),
@@ -71,7 +71,9 @@ class BD_locale {
       ''');
       log("Table EST_PRETE créée");
 
+      CatProvLocale().insertTest();
       ObjetProv().insertTest();
+
 
     } catch (e) {
       log('Erreur lors de la création de la base de données: $e');
